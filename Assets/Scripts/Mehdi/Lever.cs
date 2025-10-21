@@ -14,7 +14,10 @@ public class Lever : MonoBehaviour
 
     void Awake()
     {
-        leverManager.LeverList.Append(this);
+        if (!leverManager.LeverList.Contains(this))
+        {
+            leverManager.LeverList.Add(this);
+        }
     }
 
     void Start()
@@ -30,21 +33,18 @@ public class Lever : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             isInRange = true;
-            Debug.Log("is in range");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
         isInRange = false;
-        Debug.Log("is not in range");
     }
     
     void Update()
     {
         if (Input.GetKeyDown(interactingKey) && isInRange)
         {
-            Debug.Log("is in range and key pressed");
             SwitchLever();
         }
     }
