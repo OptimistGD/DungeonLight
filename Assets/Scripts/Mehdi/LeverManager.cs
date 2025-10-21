@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class LeverManager : MonoBehaviour
 {
-    [Header("Ajouter tout les levier à assigner a ce LeverManager")] [SerializeField] public Lever[] LeverList;
+    [Header("Ajouter tout les levier à assigner a ce LeverManager")] [SerializeField] public List<Lever> LeverList = new List<Lever>();
     private int leverCounter = 0;
     private int activatedLevers = 0;
     [Header("ajouter la touche pour activer au leviers\nsi laissé vide prend la valeur par defaut (E)\nou celles assigné a chaque levier individuellement")][SerializeField]
@@ -19,7 +20,7 @@ public class LeverManager : MonoBehaviour
 
     void Start()
     {
-        leverCounter = LeverList.Length;
+        leverCounter = LeverList.Count;
     }
 
     public void LeverSwitched(bool value)
@@ -33,7 +34,7 @@ public class LeverManager : MonoBehaviour
             activatedLevers -= 1;
         }
 
-        if (activatedLevers == leverCounter)
+        if (activatedLevers >= leverCounter)
         {
             ActionToTrigger();
         }
