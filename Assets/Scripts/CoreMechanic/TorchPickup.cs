@@ -29,7 +29,12 @@ public class TorchPickup : MonoBehaviour
 
         if (distance <= pickupDistance)
         {
-            TorchController.GiveTorch();
+            TorchController playerTorch = FindObjectOfType<TorchController>();
+            if (playerTorch != null)
+            {
+                playerTorch.GiveTorch();
+            }
+            
             Debug.Log("Torche ramassée !");
             Destroy(gameObject); // supprimer l’objet ramassé
 
