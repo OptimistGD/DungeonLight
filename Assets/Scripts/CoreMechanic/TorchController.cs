@@ -9,7 +9,7 @@ public class TorchController : MonoBehaviour
     public Light torchLight;
     public CanvasGroup darknessOverlay;
     public AudioSource whispersAudio;
-    public CameraEffects cameraEffects; // 👈 référence au script CameraEffects
+    private CameraEffects cameraEffects; //référence au script CameraEffects
 
     [Header("Paramètres")]
     public float deathDelay = 5f;
@@ -32,6 +32,8 @@ public class TorchController : MonoBehaviour
         if (torchLight != null) torchLight.enabled = false;
         if (darknessOverlay != null) darknessOverlay.alpha = 0f;
         if (whispersAudio != null) whispersAudio.volume = 0f;
+        
+        cameraEffects = FindObjectOfType<CameraEffects>();
     }
 
     void Update()
@@ -56,6 +58,7 @@ public class TorchController : MonoBehaviour
         Debug.Log("Le joueur a récupéré la torche !");
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void SetTorch(bool on)
     {
         isOn = on;
@@ -68,6 +71,9 @@ public class TorchController : MonoBehaviour
         {
             if (deathCoroutine != null) StopCoroutine(deathCoroutine);
             deathCoroutine = StartCoroutine(DeathTimer());
+            
+            // Démarre le fondu et les murmures
+            if (cameraEffects != null) cameraEffects.StartDarknessEffect();
         }
         else
         {
@@ -80,7 +86,7 @@ public class TorchController : MonoBehaviour
             // Réinitialise les effets visuels/sonores quand la torche se rallume
             if (darknessOverlay != null) darknessOverlay.alpha = 0f;
             if (whispersAudio != null) whispersAudio.volume = 0f;
-            if (cameraEffects != null) cameraEffects.ResetPosition();
+            if (cameraEffects != null) cameraEffects.StopDarknessEffect();
         }
     }
 
@@ -101,11 +107,10 @@ public class TorchController : MonoBehaviour
                 darknessOverlay.alpha = Mathf.Lerp(0f, 1f, t);
 
             if (whispersAudio != null)
+            {
                 whispersAudio.volume = Mathf.Lerp(0f, 1f, t);
-
-            if (cameraEffects != null)
-                cameraEffects.Shake(0.1f, Mathf.Lerp(0.01f, 0.04f, t)); // 👈 tremblement doux et progressif
-
+            }
+            
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -117,6 +122,9 @@ public class TorchController : MonoBehaviour
     {
         Debug.Log("Mort : la torche est restée éteinte trop longtemps.");
         StartCoroutine(ShowDeathScreen());
+        
+        if (cameraEffects != null)
+            cameraEffects.PlayDeathEffect();
     }
 
     private IEnumerator ShowDeathScreen()
@@ -125,16 +133,13 @@ public class TorchController : MonoBehaviour
         {
             deathScreen.alpha = 1f;
             if (deathText != null)
-                deathText.enabled = true; // 👈 on affiche le texte visible de l’UI
+                deathText.enabled = true; //on affiche le texte visible de l’UI
         }
 
         if (deathAudio != null)
             deathAudio.Play();
 
         yield return new WaitForSeconds(3f);
-
-        if (cameraEffects != null)
-            cameraEffects.ResetPosition();
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
