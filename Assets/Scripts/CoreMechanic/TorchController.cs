@@ -20,7 +20,7 @@ public class TorchController : MonoBehaviour
     public AudioSource deathAudio; // son joué à la mort
 
     [Header("État du joueur")]
-    public bool HasTorch = false;
+    public bool hasTorch = false;
     private bool isOn = false;
     private Coroutine deathCoroutine = null;
 
@@ -38,7 +38,7 @@ public class TorchController : MonoBehaviour
 
     void Update()
     {
-        if (!HasTorch) return;
+        if (!hasTorch) return;
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -48,13 +48,13 @@ public class TorchController : MonoBehaviour
 
     public void ToggleTorch()
     {
-        if (!HasTorch) return;
+        if (!hasTorch) return;
         SetTorch(!isOn);
     }
 
     public void GiveTorch()
     {
-        HasTorch = true;
+        hasTorch = true;
         Debug.Log("Le joueur a récupéré la torche !");
     }
 
@@ -65,7 +65,7 @@ public class TorchController : MonoBehaviour
         if (torchLight != null) torchLight.enabled = on;
         if (torchVisual != null) torchVisual.ShowTorch(on);
 
-        if (!HasTorch) return;
+        if (!hasTorch) return;
 
         if (!on)
         {
@@ -95,7 +95,7 @@ public class TorchController : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < deathDelay)
         {
-            if (isOn || !HasTorch)
+            if (isOn || !hasTorch)
             {
                 deathCoroutine = null;
                 yield break;
