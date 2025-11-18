@@ -1,26 +1,20 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
         [SerializeField] private float interactDistance = 3f; // distance max pour activer un levier
-        [SerializeField] private KeyCode interactKey = KeyCode.E; // touche d’interaction
-
+        
         private Camera playerCamera;
 
         private void Start()
         {
                 playerCamera = Camera.main;
         }
+        
 
-        private void Update()
-        {
-                if (Input.GetKeyDown(interactKey))
-                {
-                        TryInteract();
-                }
-        }
-
-        private void TryInteract()
+        [UsedImplicitly]
+        public void TryInteract()
         {
                 // Lance un rayon devant le joueur
                 if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, interactDistance))
