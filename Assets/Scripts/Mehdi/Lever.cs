@@ -10,7 +10,6 @@ public class Lever : MonoBehaviour
     [Header("ajouter la touche pour activer ce levier")][SerializeField]
     public KeyCode interactingKey = KeyCode.E;
     public bool state;
-    public bool isInRange;
     
 
     void Start()
@@ -26,26 +25,17 @@ public class Lever : MonoBehaviour
         }
     } 
     
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            isInRange = true;
+            if (Input.GetKeyDown(interactingKey))
+            {
+                SwitchLever();
+            } 
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        isInRange = false;
-    }
-    
-    void Update()
-    {
-        if (Input.GetKeyDown(interactingKey) && isInRange)
-        {
-            SwitchLever();
-        }
-    }
 
     private void SwitchLever()
     {
