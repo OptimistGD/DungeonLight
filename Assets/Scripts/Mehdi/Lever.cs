@@ -6,25 +6,23 @@ using UnityEngine.Serialization;
 public class Lever : MonoBehaviour
 {
     [FormerlySerializedAs("LeverManager")] [Header("ajouter le LeverManager au quel on souhaite\nassigner ce levier")][SerializeField]
-    private LeverManager leverManager;
+    public LeverManager leverManager;
     [Header("ajouter la touche pour activer ce levier")][SerializeField]
     public KeyCode interactingKey = KeyCode.E;
-    private bool state;
-    private bool isInRange;
-
-    void Awake()
-    {
-        if (!leverManager.LeverList.Contains(this))
-        {
-            leverManager.LeverList.Add(this);
-        }
-    }
+    public bool state;
+    public bool isInRange;
+    
 
     void Start()
     {
+        if (!leverManager.leverList.Contains(this))
+        {
+            leverManager.leverList.Add(this);
+        }
         if (leverManager.overwriteKeyCode != KeyCode.None)
         {
             interactingKey = leverManager.overwriteKeyCode;
+            Debug.Log(interactingKey.ToString());
         }
     } 
     
