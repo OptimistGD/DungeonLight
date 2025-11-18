@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Levier : MonoBehaviour
 {
+        public float L;
+        public float J;
+        public float K;
     public event Action OnLevierChange;
     public bool isActive = false;
     
@@ -13,7 +16,7 @@ public class Levier : MonoBehaviour
                     return;
 
             isActive = true;
-            transform.localRotation = Quaternion.Euler(isActive ? 45f : -45f, 0f, 0f);
+            transform.localRotation = Quaternion.Euler(  J, -45f, -45f);
 
             OnLevierChange?.Invoke();
     }
