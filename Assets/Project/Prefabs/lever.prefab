@@ -51,7 +51,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3469941601794882530}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -128,7 +128,6 @@ MonoBehaviour:
   leverManager: {fileID: 0}
   interactingKey: 101
   state: 0
-  isInRange: 0
 --- !u!1001 &8939747029200221246
 PrefabInstance:
   m_ObjectHideFlags: 0
