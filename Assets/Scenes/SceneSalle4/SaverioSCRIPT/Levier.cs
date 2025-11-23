@@ -7,6 +7,7 @@ public class Levier : MonoBehaviour
         public float L;
         public float J;
         public float K;
+        [SerializeField] private AudioSource audioSource;
     public event Action OnLevierChange;
     public bool isActive = false;
     
@@ -19,5 +20,7 @@ public class Levier : MonoBehaviour
             transform.localRotation = Quaternion.Euler(  J, -45f, -45f);
 
             OnLevierChange?.Invoke();
+            
+            audioSource.Play();
     }
 }
