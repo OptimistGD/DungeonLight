@@ -1,40 +1,45 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RotatingObject : MonoBehaviour
 {
-    public float rotationStep = 90f; // angle à chaque rotation
-    public Vector3 correctRotation;  // rotation correcte (en Euler)
-    public bool isCorrect = false;   // état actuel
+    public float rotationStep = 90f;
+    public Vector3 correctRotation;
+    public float rotationTolerance = 1f;
+
+    private bool playerInside = false;
+    public bool isCorrect = false;
 
     private void Update()
     {
-        // Exemple : clic gauche pour tourner
-        if (Input.GetMouseButtonDown(0))
+        if (playerInside && Input.GetKeyDown(KeyCode.E))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit) && hit.transform == transform)
-            {
-                RotateObject();
-            }
+            RotateObject();
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            playerInside = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            playerInside = false;
     }
 
     void RotateObject()
     {
-        transform.Rotate(Vector3.up, rotationStep); // tourne sur l’axe Y
+        transform.Rotate(Vector3.up, rotationStep);
 
-        // Vérifie si la rotation correspond à la bonne
-        Vector3 currentRot = new Vector3(
-            Mathf.Round(transform.eulerAngles.x),
-            Mathf.Round(transform.eulerAngles.y),
-            Mathf.Round(transform.eulerAngles.z)
-        );
+        Vector3 currentRot = transform.eulerAngles;
+        bool xOk = Mathf.Abs(Mathf.DeltaAngle(currentRot.x, correctRotation.x)) < rotationTolerance;
+        bool yOk = Mathf.Abs(Mathf.DeltaAngle(currentRot.y, correctRotation.y)) < rotationTolerance;
+        bool zOk = Mathf.Abs(Mathf.DeltaAngle(currentRot.z, correctRotation.z)) < rotationTolerance;
 
-        // Tolérance : on arrondit à 1° pour éviter les flottants
-        isCorrect = Vector3.Distance(currentRot, correctRotation) < 1f;
+        isCorrect = xOk && yOk && zOk;
 
-        // Notifie le manager
-        PuzzleManager.Instance.CheckAllObjects();
+        PuzzleManager.Instance?.CheckAllObjects();
     }
 }
