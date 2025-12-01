@@ -35,10 +35,9 @@ public class RotatingObject : MonoBehaviour
 
         Vector3 currentRot = transform.eulerAngles;
         bool xOk = Mathf.Abs(Mathf.DeltaAngle(currentRot.x, correctRotation.x)) < rotationTolerance;
-        bool yOk = Mathf.Abs(Mathf.DeltaAngle(currentRot.y, correctRotation.y)) < rotationTolerance;
-        bool zOk = Mathf.Abs(Mathf.DeltaAngle(currentRot.z, correctRotation.z)) < rotationTolerance;
 
-        isCorrect = xOk && yOk && zOk;
+
+        isCorrect = xOk;
 
         PuzzleManager.Instance?.CheckAllObjects();
     }

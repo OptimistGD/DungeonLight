@@ -1,10 +1,11 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PuzzleManager : MonoBehaviour
 {
+    public static PuzzleManager Instance { get; private set; }
+
     [Header("Objets à faire tourner")]
     public List<RotatingObject> rotatingObjects;
 
@@ -17,15 +18,21 @@ public class PuzzleManager : MonoBehaviour
     [Header("Vitesse du déplacement (en secondes)")]
     public float moveDuration = 2f;
 
+    [Header("Son de réussite")]
+    public AudioClip successSound;
+    private AudioSource audioSource;
+
     private bool solved = false;
 
     private void Awake()
     {
-        // Permet d’y accéder facilement depuis d’autres scripts
         Instance = this;
-    }
 
-    public static PuzzleManager Instance { get; private set; }
+        // Récupère l'audio source (ou en ajoute une)
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+    }
 
     public void CheckAllObjects()
     {
@@ -34,13 +41,19 @@ public class PuzzleManager : MonoBehaviour
         foreach (RotatingObject obj in rotatingObjects)
         {
             if (!obj.isCorrect)
-                return; // un objet n’est pas bien placé
+                return;
         }
 
-        // Tous corrects !
+        // Puzzle réussi !
         solved = true;
-        StartCoroutine(MoveDoorSmoothly());
         Debug.Log("✅ Puzzle résolu !");
+
+        // 🔊 Jouer le son
+        if (successSound != null)
+            audioSource.PlayOneShot(successSound);
+
+        // Déplacer l'objet après
+        StartCoroutine(MoveDoorSmoothly());
     }
 
     private IEnumerator MoveDoorSmoothly()
@@ -53,7 +66,7 @@ public class PuzzleManager : MonoBehaviour
         {
             objectToMove.position = Vector3.Lerp(startPos, endPos, elapsed / moveDuration);
             elapsed += Time.deltaTime;
-            yield return null; // attend la frame suivante
+            yield return null;
         }
 
         objectToMove.position = endPos;
