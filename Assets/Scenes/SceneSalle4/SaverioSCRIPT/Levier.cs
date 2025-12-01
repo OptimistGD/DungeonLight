@@ -1,13 +1,10 @@
 using System;
 using UnityEngine;
 
-
 public class Levier : MonoBehaviour
 {
-        public float L;
-        public float J;
-        public float K;
         [SerializeField] private AudioSource audioSource;
+        [SerializeField] private float rot;
     public event Action OnLevierChange;
     public bool isActive = false;
     
@@ -15,10 +12,8 @@ public class Levier : MonoBehaviour
     {
             if (isActive)
                     return;
-
             isActive = true;
-            transform.localRotation = Quaternion.Euler(  J, -45f, -45f);
-
+            transform.rotation *= Quaternion.Euler(0f, rot, 0f); 
             OnLevierChange?.Invoke();
             
             audioSource.Play();
