@@ -4,20 +4,6 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Build.unity
-    guid: efd1503e22f731042a891219d99d8e4d
-  - enabled: 0
-    path: Assets/Scenes/TrainingRoom/TrainingRoom.unity
-    guid: 7ca85a29baed6754a86d0caba8208d2f
-<<<<<<< HEAD
-  - enabled: 0
-=======
-  - enabled: 1
->>>>>>> Elias
-    path: Assets/Scenes/SceneSalle3/SceneSalle3.unity
-    guid: c7c037bec015a0240abb1ea2ee8aa34d
-  m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_Scenes: []
+  m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
