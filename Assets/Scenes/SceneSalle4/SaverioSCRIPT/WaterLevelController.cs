@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class WaterLevelController : MonoBehaviour
 {
-    [SerializeField] private float startHeight = 0f;     // Hauteur de départ de l’eau
-    [SerializeField] private float loweredHeight = -5f;  // Hauteur quand tout est activé
+  // Hauteur quand tout est activé
     [SerializeField] private float moveSpeed = 2f;       // Vitesse du mouvement de l’eau
+    [SerializeField] private GameObject startTarget;    // Vitesse du mouvement de l’eau
+    [SerializeField] private GameObject endTarget ;       // Vitesse du mouvement de l’eau
 
     private float targetHeight;
 
     private void Start()
     {
-        targetHeight = startHeight;
+        targetHeight = startTarget.transform.position.y;
         Vector3 pos = transform.position;
-        pos.y = startHeight;
+        pos.y = targetHeight;
         transform.position = pos;
     }
 
@@ -26,8 +27,7 @@ public class WaterLevelController : MonoBehaviour
 
     public void SetWaterLevel(float normalizedValue)
     {
-        // normalizedValue = 0 → eau pleine
-        // normalizedValue = 1 → eau totalement abaissée
-        targetHeight = Mathf.Lerp(startHeight, loweredHeight, normalizedValue);
+        targetHeight = Mathf.Lerp(startTarget.transform.position.y, endTarget.transform.position.y, Mathf.Clamp01(normalizedValue)
+        );
     }
 }
